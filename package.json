@@ -1,0 +1,40 @@
+{
+  "name": "ngmp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env PORT=3030 ts-node-dev --respawn src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oziniak/ngmp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oziniak/ngmp/issues"
+  },
+  "homepage": "https://github.com/oziniak/ngmp#readme",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "@types/ajv": "^1.0.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.6",
+    "@types/uuid": "^8.3.1",
+    "cross-env": "^7.0.3",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@types/http-status-codes": "^1.2.0",
+    "ajv": "^8.6.3",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^2.1.1",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "uuid": "^8.3.2"
+  }
+}
