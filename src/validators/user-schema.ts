@@ -1,7 +1,7 @@
 import Ajv, { JSONSchemaType } from "ajv";
 import addFormats from "ajv-formats";
 import customizeErrors from "ajv-errors";
-import { User } from "./types";
+import { User } from "../types";
 
 const ajv = new Ajv({ allErrors: true });
 customizeErrors(addFormats(ajv));
@@ -18,7 +18,8 @@ const schema: JSONSchemaType<User> = {
     password: {
       type: "string",
       format: "password",
-      pattern: "^(?=.*[A-Za-z0-9])(?=.*d)[A-Za-zd0-9]{8,}$",
+      // pattern: "^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$",
+      pattern: "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$",
       minLength: 8,
       errorMessage: {
         pattern: "Should consist only of letters and numbers. Min Length: 8",

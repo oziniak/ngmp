@@ -1,7 +1,7 @@
 import { ValidateFunction } from "ajv";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { User } from "./types";
+import { User } from "../types";
 
 export function validateUser(schema: ValidateFunction<User>) {
   return function (
