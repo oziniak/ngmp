@@ -1,7 +1,6 @@
-import { PrismaClient } from ".prisma/client";
+import { Prisma, PrismaClient } from ".prisma/client";
 import { Service } from "typedi";
 import { db } from "../db";
-import { UserDto } from "../types";
 
 @Service()
 export class UserModel {
@@ -12,7 +11,10 @@ export class UserModel {
   }
 
   getAll() {
-    return this.db.user.findMany({ where: { isDeleted: false } });
+    return this.db.user.findMany({
+      where: { isDeleted: false },
+      // include: { groups: true }, // for testing purpose
+    });
   }
 
   getOne(id: string) {
@@ -26,13 +28,13 @@ export class UserModel {
     });
   }
 
-  create(userDto: UserDto) {
+  create(userDto: Prisma.UserCreateInput) {
     return this.db.user.create({
       data: userDto,
     });
   }
 
-  update(id: string, user: UserDto) {
+  update(id: string, user: Prisma.UserUpdateInput) {
     return this.db.user.update({
       where: { id: Number(id) },
       data: user,

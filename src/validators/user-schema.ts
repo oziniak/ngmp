@@ -27,6 +27,11 @@ const schema: JSONSchemaType<User> = {
     },
     age: { type: "number", minimum: 4, maximum: 130 },
     isDeleted: { type: "boolean" },
+    groups: {
+      type: "array",
+      items: { type: "string" },
+      nullable: true,
+    },
   },
   required: [],
   additionalProperties: false,
