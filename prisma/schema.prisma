@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -13,7 +14,23 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   login     String   @unique
-  password  String?
+  password  String
   age       Int
   isDeleted Boolean? @default(false)
+  groups    Group[]  @relation(references: [id])
+}
+
+model Group {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  permissions Permissions[]
+  users       User[]        @relation(references: [id])
+}
+
+enum Permissions {
+  READ
+  WRITE
+  DELETE
+  SHARE
+  UPLOAD_FILES
 }

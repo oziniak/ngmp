@@ -1,6 +1,6 @@
+import { Prisma } from "@prisma/client";
 import { Service } from "typedi";
 import { UserModel } from "../models/user-model";
-import { UserDto } from "../types";
 
 @Service()
 export class UserService {
@@ -22,11 +22,11 @@ export class UserService {
     return this.userModel.softDelete(id);
   }
 
-  create(user: UserDto) {
+  create(user: Prisma.UserCreateInput) {
     return this.userModel.create(user);
   }
 
-  updateUser(id: string, user: UserDto) {
+  updateUser(id: string, user: Prisma.UserUpdateInput) {
     return this.userModel.update(id, user);
   }
 }
