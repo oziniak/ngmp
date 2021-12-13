@@ -1,10 +1,23 @@
 import "reflect-metadata";
+import morgan from "morgan";
 import express, { Request } from "express";
 import { userRouter } from "./routers/controllers/user-controller";
 import { groupRouter } from "./routers/controllers/group-controller";
 import { db } from "./db";
+import { appLogger } from "./logger";
+import { errorHandler } from "./error-handler";
+
+process.on("uncaughtException", (error: Error) => {
+  appLogger.error("Uncaught exception, shutting down", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (error) => {
+  appLogger.error("Uncaught exception, shutting down", error);
+});
 
 const app = express();
+morgan("tiny");
 
 app.use(express.json());
 
@@ -29,4 +42,8 @@ app.post(
   }
 );
 
-app.listen(process.env.PORT);
+app.use(errorHandler);
+
+app.listen(process.env.PORT, () =>
+  appLogger.info(`Server is listening on port ${process.env.PORT}`)
+);

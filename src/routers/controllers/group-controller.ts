@@ -11,7 +11,7 @@ groupRouter.get("/", async (req, res) => {
   const groupService = Container.get(GroupService);
   const resp = await groupService.getAll();
 
-  return res.status(200).json(resp);
+  return res.status(OK).json(resp);
 });
 
 groupRouter.get("/:id", async (req, res) => {
