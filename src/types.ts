@@ -1,10 +1,10 @@
 export type User = {
-  id: string;
+  // id: string;
   login: string;
   password: string;
   age: number;
   isDeleted: boolean;
-  groups?: any[];
+  // groups?: any[];
 };
 
 export type Permissions =

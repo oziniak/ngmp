@@ -32,8 +32,8 @@ userRouter.get("/:id", async (req, res) => {
   return res.status(OK).json(user);
 });
 
-// userRouter.post("/", validateUser(userSchemaRequired), async (req, res) => {
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", validateUser(userSchemaRequired), async (req, res) => {
+  // userRouter.post("/", async (req, res) => {
   const userDto = req.body;
   const userService = Container.get(UserService);
   try {
@@ -45,8 +45,8 @@ userRouter.post("/", async (req, res) => {
   }
 });
 
-// userRouter.put("/:id", validateUser(userSchema), async (req, res) => {
-userRouter.put("/:id", async (req, res) => {
+userRouter.put("/:id", validateUser(userSchema), async (req, res) => {
+  // userRouter.put("/:id", async (req, res) => {
   const userService = Container.get(UserService);
   try {
     const result = await userService.updateUser(req.params.id, req.body);
