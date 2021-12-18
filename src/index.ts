@@ -8,19 +8,19 @@ import { appLogger } from "./logger";
 import { errorHandler } from "./error-handler";
 
 process.on("uncaughtException", (error: Error) => {
-  appLogger.error("Uncaught exception, shutting down", error);
+  appLogger.error(`Uncaught exception, shutting down: ${error}`);
   process.exit(1);
 });
 
 process.on("unhandledRejection", (error) => {
-  appLogger.error("Uncaught exception, shutting down", error);
+  appLogger.error(`Unhandled exception, in promise, ${error}`);
 });
 
 const app = express();
-morgan("tiny");
 
 app.use(express.json());
 
+app.use(morgan("tiny"));
 app.use("/user", userRouter);
 app.use("/group", groupRouter);
 

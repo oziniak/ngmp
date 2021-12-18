@@ -4,13 +4,17 @@ import Container from "typedi";
 import { userSchemaRequired, userSchema } from "../../validators/user-schema";
 import { validateUser } from "../../validators/validate-user";
 import { UserService } from "../../services/user-service";
+import { catchErrors } from "../../decorators/catch-errors";
+import { logTime } from "../../decorators/log-time";
 
 const userRouter = express.Router();
 
 const { OK, BAD_REQUEST, NOT_FOUND } = StatusCodes;
 
+@catchErrors
+@logTime
 class UserRouterHandler {
-  async getUsers(req: Request, res: Response) {
+  async handleGetUsers(req: Request, res: Response) {
     const userService = Container.get(UserService);
     const { login = "", limit } = req.query;
     let resp;
@@ -24,7 +28,7 @@ class UserRouterHandler {
     return res.status(200).json(resp);
   }
 
-  async getUser(req: Request, res: Response) {
+  async handleGetUser(req: Request, res: Response) {
     const userService = Container.get(UserService);
     const user = await userService.getOne(req.params.id);
     if (!user) {
@@ -33,19 +37,18 @@ class UserRouterHandler {
     return res.status(OK).json(user);
   }
 
-  async createUser(req: Request, res: Response) {
+  async handleCreateUser(req: Request, res: Response) {
     const userDto = req.body;
     const userService = Container.get(UserService);
     try {
       const newUser = await userService.create(userDto);
       return res.status(OK).json(newUser);
     } catch (e) {
-      console.error(e);
       return res.status(BAD_REQUEST).json(getReasonPhrase(BAD_REQUEST));
     }
   }
 
-  async updateUser(req: Request, res: Response) {
+  async handleUpdateUser(req: Request, res: Response) {
     const userService = Container.get(UserService);
     try {
       const result = await userService.updateUser(req.params.id, req.body);
@@ -55,7 +58,7 @@ class UserRouterHandler {
     }
   }
 
-  async deleteUser(req: Request, res: Response) {
+  async handleDeleteUser(req: Request, res: Response) {
     const userService = Container.get(UserService);
     try {
       const result = await userService.softDelete(req.params.id);
@@ -70,10 +73,14 @@ class UserRouterHandler {
 
 const handler = new UserRouterHandler();
 
-userRouter.get("/", handler.getUsers);
-userRouter.get("/:id", handler.getUser);
-userRouter.post("/", validateUser(userSchemaRequired), handler.createUser);
-userRouter.put("/:id", validateUser(userSchema), handler.updateUser);
-userRouter.delete("/:id", handler.deleteUser);
+userRouter.get("/", handler.handleGetUsers);
+userRouter.get("/:id", handler.handleGetUser);
+userRouter.post(
+  "/",
+  validateUser(userSchemaRequired),
+  handler.handleCreateUser
+);
+userRouter.put("/:id", validateUser(userSchema), handler.handleUpdateUser);
+userRouter.delete("/:id", handler.handleDeleteUser);
 
 export { userRouter };
