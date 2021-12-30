@@ -12,7 +12,7 @@ const { OK, BAD_REQUEST, NOT_FOUND } = StatusCodes;
 @catchErrors
 @logTime
 class GroupRouterHandler {
-  async handlegetGroups(req: Request, res: Response) {
+  async handleGetGroups(req: Request, res: Response) {
     const groupService = Container.get(GroupService);
     const resp = await groupService.getAll();
 
@@ -61,7 +61,7 @@ class GroupRouterHandler {
 
 const handler = new GroupRouterHandler();
 
-groupRouter.get("/", handler.handlegetGroups);
+groupRouter.get("/", handler.handleGetGroups);
 groupRouter.get("/:id", handler.handleGetGroup);
 groupRouter.post("/", handler.handleCreateGroup);
 groupRouter.put("/:id", handler.handleUpdateGroup);

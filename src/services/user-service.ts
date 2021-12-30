@@ -10,8 +10,12 @@ export class UserService {
     return this.userModel.getAll();
   }
 
-  getByLogin(login: string, limit: number) {
-    return this.userModel.getByLogin(login, limit);
+  getByLogin(
+    login: string,
+    limit: number,
+    config: { password: boolean } = { password: false }
+  ) {
+    return this.userModel.getByLogin(login, limit, config);
   }
 
   getOne(id: string) {

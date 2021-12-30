@@ -1,11 +1,17 @@
 import "reflect-metadata";
 import morgan from "morgan";
+import dotenv from "dotenv";
+import cors from "cors";
 import express, { Request } from "express";
 import { userRouter } from "./routers/controllers/user-controller";
 import { groupRouter } from "./routers/controllers/group-controller";
 import { db } from "./db";
 import { appLogger } from "./logger";
 import { errorHandler } from "./error-handler";
+import { loginRouter } from "./routers/controllers/login-controller";
+import { checkToken } from "./middleware/check-token";
+
+dotenv.config();
 
 process.on("uncaughtException", (error: Error) => {
   appLogger.error(`Uncaught exception, shutting down: ${error}`);
@@ -18,9 +24,14 @@ process.on("unhandledRejection", (error) => {
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
 app.use(morgan("tiny"));
+
+app.use("/login", loginRouter);
+
+app.use(checkToken);
+
 app.use("/user", userRouter);
 app.use("/group", groupRouter);
 

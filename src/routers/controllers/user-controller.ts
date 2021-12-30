@@ -6,6 +6,7 @@ import { validateUser } from "../../validators/validate-user";
 import { UserService } from "../../services/user-service";
 import { catchErrors } from "../../decorators/catch-errors";
 import { logTime } from "../../decorators/log-time";
+import { hashPassword } from "../../middleware/hash-password";
 
 const userRouter = express.Router();
 
@@ -25,7 +26,7 @@ class UserRouterHandler {
       resp = await userService.getAll();
     }
 
-    return res.status(200).json(resp);
+    return res.status(OK).json(resp);
   }
 
   async handleGetUser(req: Request, res: Response) {
@@ -44,6 +45,7 @@ class UserRouterHandler {
       const newUser = await userService.create(userDto);
       return res.status(OK).json(newUser);
     } catch (e) {
+      console.log({ e });
       return res.status(BAD_REQUEST).json(getReasonPhrase(BAD_REQUEST));
     }
   }
@@ -78,6 +80,7 @@ userRouter.get("/:id", handler.handleGetUser);
 userRouter.post(
   "/",
   validateUser(userSchemaRequired),
+  hashPassword,
   handler.handleCreateUser
 );
 userRouter.put("/:id", validateUser(userSchema), handler.handleUpdateUser);
